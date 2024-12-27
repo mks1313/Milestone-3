@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2024/12/27 13:28:41 by mmarinov         ###   ########.fr        #
+#    Updated: 2024/12/27 13:50:08 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ NAME = philo
 
 SRC_PATH  = src/
 SRC       = utils.c \
+			pfilos.c
 
 
 
