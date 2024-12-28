@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2024/12/27 13:50:08 by mmarinov         ###   ########.fr        #
+#    Updated: 2024/12/28 14:03:01 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,10 @@ BLUE    = \033[0;94m
 NAME = philo
 
 SRC_PATH  = src/
-SRC       = utils.c \
-			pfilos.c
+INC_PATH  = includes/
 
 
-
+SRC       = philosophers.c
 
 SRCS      = $(addprefix $(SRC_PATH), $(SRC))
 
@@ -34,7 +33,7 @@ OBJ_DIR   = objs
 OBJS      = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 CC        = gcc
-CFLAGS    = -Wall -Wextra -Werror -g
+CFLAGS    = -Wall -Wextra -Werror -g -I$(INC_PATH)
 RM        = rm -rf
 
 all: $(NAME)
