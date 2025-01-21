@@ -6,111 +6,121 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 13:58:44 by mmarinov          #+#    #+#             */
-/*   Updated: 2024/12/28 14:06:25 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:07:24 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-// Obtener el tiempo actual en milisegundos
-long long get_time_ms(void) {
-    struct timeval time;
-    gettimeofday(&time, NULL);
-    return (time.tv_sec * 1000) + (time.tv_usec / 1000);
-}
+void	init_forks(pthread_mutex_t *forks, int num_of_forks)
+{
+    int	i;
 
-// Imprimir el estado del filósofo (pensando, comiendo, durmiendo)
-void print_status(t_philosopher *philosopher, char *status) {
-    pthread_mutex_lock(&philosopher->data->print_lock);
-    long long current_time = get_time_ms() - philosopher->data->start_time;
-    printf("%lld %d %s\n", current_time, philosopher->id, status);
-    pthread_mutex_unlock(&philosopher->data->print_lock);
-}
-
-// Función de la rutina del filósofo
-void *philosopher_routine(void *arg) {
-    t_philosopher *philosopher = (t_philosopher *)arg;
-
-    while (TRUE) {
-        print_status(philosopher, "is thinking");
-        take_forks(philosopher);
-        print_status(philosopher, "is eating");
-        usleep(1000);  // Comer durante 1 milisegundo (ajustable)
-        put_forks(philosopher);
-        print_status(philosopher, "is sleeping");
-        usleep(1000);  // Dormir durante 1 milisegundo (ajustable)
+    i = 0;
+    while (i < num_of_forks)
+    {
+        pthread_mutex_init(&forks[i], NULL);
+        i++;
     }
-    return NULL;
 }
 
-// Tomar los tenedores
-void take_forks(t_philosopher *philosopher) {
-    pthread_mutex_lock(philosopher->left_fork);
-    print_status(philosopher, "has taken a left fork");
-    pthread_mutex_lock(philosopher->right_fork);
-    print_status(philosopher, "has taken a right fork");
+void	init_philosophers(t_philosopher *philosophers, pthread_mutex_t *forks, t_data *data)
+{
+    int	i;
+
+    i = 0;
+    while (i < data->num_philosophers)
+    {
+        philosophers[i].id = i + 1;
+        philosophers[i].meals_eaten = 0;
+        philosophers[i].data = data;
+        philosophers[i].left_fork = &forks[i];
+        philosophers[i].right_fork = &forks[(i + 1) % data->num_philosophers];
+        philosophers[i].last_meal_time = get_time_in_ms();
+        philosophers[i].is_dead = 0;
+        i++;
+    }
 }
 
-// Dejar los tenedores
-void put_forks(t_philosopher *philosopher) {
-    pthread_mutex_unlock(philosopher->right_fork);
-    pthread_mutex_unlock(philosopher->left_fork);
+void	*philosopher_routine(void *arg)
+{
+    t_philosopher *philo = (t_philosopher *)arg;
+    while (!philo->is_dead && !philo->data->all_fed)
+    {
+        printf("%ld %d is thinking\n", get_time_in_ms(), philo->id);
+        pthread_mutex_lock(philo->left_fork);
+        printf("%ld %d has taken a fork\n", get_time_in_ms(), philo->id);
+        pthread_mutex_lock(philo->right_fork);
+        printf("%ld %d has taken a fork\n", get_time_in_ms(), philo->id);
+        printf("%ld %d is eating\n", get_time_in_ms(), philo->id);
+        philo->last_meal_time = get_time_in_ms();
+        usleep(philo->data->time_to_eat * 1000);
+        philo->meals_eaten++;
+        pthread_mutex_unlock(philo->right_fork);
+        pthread_mutex_unlock(philo->left_fork);
+        printf("%ld %d is sleeping\n", get_time_in_ms(), philo->id);
+        usleep(philo->data->time_to_sleep * 1000);
+    }
+    return (NULL);
 }
 
-// Inicializar los filósofos
-int init_philosophers(t_data *data, t_philosopher **philosophers) {
+void	create_threads(t_philosopher *philosophers, int num_philosophers)
+{
     int i;
 
-    *philosophers = malloc(sizeof(t_philosopher) * data->num_philosophers);
-    if (!*philosophers) return -1;
-
-    for (i = 0; i < data->num_philosophers; i++) {
-        (*philosophers)[i].id = i + 1;
-        (*philosophers)[i].meals_eaten = 0;
-        (*philosophers)[i].last_meal_time = get_time_ms();
-        (*philosophers)[i].data = data;
-        (*philosophers)[i].left_fork = &data->forks[i];
-        (*philosophers)[i].right_fork = &data->forks[(i + 1) % data->num_philosophers];
+    i = 0;
+    while (i < num_philosophers)
+    {
+        pthread_create(&philosophers[i].thread, NULL, philosopher_routine, &philosophers[i]);
+        i++;
     }
-    return 0;
 }
 
-// Inicializar los datos globales
-void init_data(t_data *data, int num_philosophers) {
-    data->num_philosophers = num_philosophers;
-    data->start_time = get_time_ms();
-    data->stop_flag = 0;
+int	main(int argc, char **argv)
+{
+    int i;
 
-    data->forks = malloc(sizeof(pthread_mutex_t) * num_philosophers);
-    for (int i = 0; i < num_philosophers; i++) {
-        pthread_mutex_init(&data->forks[i], NULL);
+    if (argc < 5 || argc > 6)
+    {
+        printf("Use: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_philosophers_must_eat]\n");
+        return (1);
     }
-    pthread_mutex_init(&data->print_lock, NULL);
-}
 
-int main(int argc, char **argv) {
     t_data data;
-    t_philosopher *philosophers;
-   //  pthread_t death_thread;
+    data.num_philosophers = ft_atoi(argv[1]);
+    data.time_to_die = ft_atoi(argv[2]);
+    data.time_to_eat = ft_atoi(argv[3]);
+    data.time_to_sleep = ft_atoi(argv[4]);
+    data.all_fed = 0;
 
-    if (argc != 2) {
-        printf("Usage: ./philosophers <number_of_philosophers>\n");
-        return 1;
-    }
+    if (argc == 6)
+        data.n_times_each_phil_must_eat = ft_atoi(argv[5]);
+    else
+        data.n_times_each_phil_must_eat = -1;
 
-    int num_philosophers = atoi(argv[1]);
-    init_data(&data, num_philosophers);
-    init_philosophers(&data, &philosophers);
+    pthread_t monitor_thread;
+    pthread_mutex_t forks[data.num_philosophers];
+    t_philosopher philosophers[data.num_philosophers];
+
+    init_forks(forks, data.num_philosophers);
+    init_philosophers(philosophers, forks, &data);
 
     // Crear hilos para los filósofos
-    for (int i = 0; i < num_philosophers; i++) {
-        pthread_create(&philosophers[i].thread, NULL, philosopher_routine, &philosophers[i]);
-    }
+    create_threads(philosophers, data.num_philosophers);
 
-    // Esperar a que los filósofos terminen (en este caso, nunca termina)
-    for (int i = 0; i < num_philosophers; i++) {
+    // Crear el hilo de monitoreo para verificar si algún filósofo muere
+    pthread_create(&monitor_thread, NULL, monitor_philo, philosophers);
+
+    // Esperar a que termine el hilo de monitoreo
+    pthread_join(monitor_thread, NULL);
+
+    // Esperar a que terminen los hilos de los filósofos
+    i = 0;
+    while (i < data.num_philosophers)
+    {
         pthread_join(philosophers[i].thread, NULL);
+        i++;
     }
 
-    return 0;
+    return (0);
 }

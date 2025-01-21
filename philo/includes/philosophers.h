@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/21 14:28:09 by mmarinov          #+#    #+#             */
+/*   Updated: 2025/01/21 16:05:11 by mmarinov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -7,36 +19,37 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-# define TRUE 1
-# define FALSE 0
-
 // Estructura para un filósofo
-typedef struct s_philosopher {
-    int id;                         // ID del filósofo
-    long long last_meal_time;       // Último tiempo de comida
-    int meals_eaten;                // Número de comidas
-    pthread_t thread;               // Hilo del filósofo
-    pthread_mutex_t *left_fork;     // Tenedor izquierdo
-    pthread_mutex_t *right_fork;    // Tenedor derecho
-    struct s_data *data;            // Datos compartidos
-} t_philosopher;
+typedef struct s_philosopher
+{
+    int				id;
+    long long		last_meal_time;
+    int				meals_eaten;
+    pthread_t		thread;
+    pthread_mutex_t	*left_fork;
+    pthread_mutex_t	*right_fork;
+    struct s_data	*data;
+    int				is_dead;
+}	t_philosopher;
 
 // Estructura de datos compartidos
-typedef struct s_data {
-    int num_philosophers;           // Número de filósofos
-    long long start_time;           // Hora de inicio
-    pthread_mutex_t *forks;         // Array de mutex para los tenedores
-    pthread_mutex_t print_lock;     // Mutex para evitar que los filósofos impriman al mismo tiempo
-    int stop_flag;                  // Bandera para detener programa (por si hay hambre, deadlock)
-} t_data;
+typedef struct s_data
+{
+    int	num_philosophers;
+    int	time_to_die;
+    int	time_to_eat;
+    int	time_to_sleep;
+    int	n_times_each_phil_must_eat;
+    int	all_fed;
+}	t_data;
 
-long long get_time_ms(void);
-void    *philosopher_routine(void *philosopher);
-void    take_forks(t_philosopher *philosopher);
-void    put_forks(t_philosopher *philosopher);
-void    *check_death(void *philosopher);
-void    print_status(t_philosopher *philosopher, char *status);
-int     init_philosophers(t_data *data, t_philosopher **philosophers);
-void    init_data(t_data *data, int num_philosophers);
+int		ft_atoi(char *s);
+long	get_time_in_ms();
+void	init_forks(pthread_mutex_t *forks, int num_of_forks);
+void	init_philosophers(t_philosopher *philosophers, pthread_mutex_t *forks, t_data *data);
+void	*philosopher_routine(void *arg);
+void	create_threads(t_philosopher *philosophers, int num_philosophers);
+void	*monitor_philo(void *arg);
+void	*init_philo_thread(void *arg);
 
 #endif
