@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:19:27 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/01/24 12:02:20 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:46:52 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ long long	get_time(void)
 {
 	struct timeval	tm;
 	long long		mlsec;
-	
+
 	gettimeofday(&tm, NULL);
 	mlsec = tm.tv_sec * 1000 + tm.tv_usec / 1000;
 	return (mlsec);
@@ -60,5 +60,3 @@ int	check_input(char *arg)
 	}
 	return (0);
 }
-
-

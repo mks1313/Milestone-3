@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:08:33 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/01/24 15:42:46 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:47:32 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_forks(pthread_mutex_t *forks, int n_filos)
 }
 
 // Init of the struct the  program and filos
-void	init_program(t_dta *dta, pthread_mutex_t *forks, cahr **argv)
+void	init_program(t_dta *dta, pthread_mutex_t *forks, char **argv)
 {
 	int	i;
 
@@ -62,9 +62,16 @@ void	init_program(t_dta *dta, pthread_mutex_t *forks, cahr **argv)
 		dta->filos[i]->id = i + 1;
 		dta->filos[i]->meals_eaten = 0;
 		dta->filos[i]->eating = 0;
-		dta->filos[i]
+		dta->filos[i]->time_start = get_time();
+		dta->filos[i]->last_meal = get_time();
+		dta->filos[i]->r_fork = &forks[(i + 1) % dta->n_filos];
+		dta->filos[i]->l_fork = &forks[i];
+		dta->filos[i]->dta = dta;
 	}
 }
 
-// Init of the filo
+/* Init of the filo
 void	init_filo(t_filo *filos, t_dta *dta, pthread_mutex_t *forks, int)
+{
+	int	i;
+}*/

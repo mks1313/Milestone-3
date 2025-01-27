@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2025/01/21 16:10:23 by mmarinov         ###   ########.fr        #
+#    Updated: 2025/01/27 15:54:12 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC_PATH  = src/
 INC_PATH  = includes/
 
 
-SRC       = philosophers.c philo_helper.c
+SRC       = philo.c philo_helper.c create.c inits.c habits.c
 
 SRCS      = $(addprefix $(SRC_PATH), $(SRC))
 
