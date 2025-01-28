@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:08:33 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/01/27 15:47:32 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:07:11 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_program(t_dta *dta, pthread_mutex_t *forks, char **argv)
 {
 	int	i;
 
+	i = 0;
 	dta->dead_flag = 0;
 	dta->n_filos = ft_atoi(argv[1]);
 	dta->tto_die = ft_atoi(argv[2]);
@@ -38,7 +39,7 @@ void	init_program(t_dta *dta, pthread_mutex_t *forks, char **argv)
 	dta->tto_sleep = ft_atoi(argv[4]);
 	dta->n_tto_eat = ft_atoi(argv[5]);
 	dta->filos = malloc(dta->n_filos * sizeof(t_filo *));
-	if (!data->filos)
+	if (!dta->filos)
 	{
 		perror("Error to assign memory");
 		exit(EXIT_FAILURE);
@@ -60,7 +61,7 @@ void	init_program(t_dta *dta, pthread_mutex_t *forks, char **argv)
 	while (i < dta->n_filos)
 	{
 		dta->filos[i]->id = i + 1;
-		dta->filos[i]->meals_eaten = 0;
+		dta->filos[i]->meals_done = 0;
 		dta->filos[i]->eating = 0;
 		dta->filos[i]->time_start = get_time();
 		dta->filos[i]->last_meal = get_time();

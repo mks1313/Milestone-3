@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:37:31 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/01/27 13:41:01 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:40:37 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	create_filo_threads(t_filo **filos, int n_filos)
 	i = 0;
 	while (i < n_filos)
 	{
-		pthread_create(&filos[i]->thread, NULL, )
+		pthread_create(&filos[i]->thread, NULL, &filo_routine, filos[i]);
+		usleep(100);
+		i++;
 	}
 }
