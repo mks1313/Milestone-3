@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "../includes/philo.h"
 
 long long	get_time(void)
 {
@@ -23,41 +23,32 @@ long long	get_time(void)
 	return (mlsec);
 }
 
+static int	ft_is_digit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+
 int	ft_atoi(char *s)
 {
 	int	res;
-	int	sign;
 	int	i;
 
 	res = 0;
-	sign = 1;
 	i = 0;
 	while (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13))
 		i++;
-	if (s[i] == '-' || s[i] == '+')
+	if (s[i] == '-')
+		error_exit("Negative numbers are not allowed!");
+	while (s[i])
 	{
-		if (s[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (s[i] >= '0' && s[i] <= '9')
-	{
+		if (!is_digit(s[i]))
+			error_exit("Invalid character detected in the input!");
+		if (res > (INT_MAX - (s[i] - '0')) / 10)
+			return (INT_MAX);
 		res = res * 10 + (s[i] - '0');
 		i++;
 	}
-	return (res * sign);
+	return (res);
 }
 
-int	check_input(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] < '0' || arg[i] > '9')
-			return (1);
-		i++;
-	}
-	return (0);
-}

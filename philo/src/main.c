@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create.c                                           :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/23 17:37:31 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/01/28 13:40:37 by mmarinov         ###   ########.fr       */
+/*   Created: 2025/01/27 15:17:12 by mmarinov          #+#    #+#             */
+/*   Updated: 2025/01/28 16:59:40 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Definir funciones de crear y ejecutar los hilos tambien de monitoreo
-#include "../inc/philo.h"
+#include "philo.h"
 
-void	create_filo_threads(t_filo **filos, int n_filos)
+int	main(int ac, char **av)
 {
-	int	i;
-
-	i = 0;
-	while (i < n_filos)
+	if (5 == ac || 6 == ac)
 	{
-		pthread_create(&filos[i]->thread, NULL, &filo_routine, filos[i]);
-		usleep(100);
-		i++;
+		// Correct input
+	}
+	else
+	{
+		error_exit("Wrong input!\n"
+		GR"Correct is : ./philo 3 500 200 200 [4]\n"RES);
 	}
 }

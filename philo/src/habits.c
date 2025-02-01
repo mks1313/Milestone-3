@@ -12,46 +12,27 @@
 
 // Definir funciones de comer, pensar, dormir y funcones para tomar
 // y soltar los tenedores
-#include "../inc/philo.h"
+#include "philo.h"
+
+void	think(t_filo *filo)
+{
+	printf(BL"Philosopher is thinking!\n"RES, filo->id);
+	usleep(filo->dta->tto_sleep * 1000);
+}
 
 void	eat(t_filo *filo)
 {
-	//Bloqueamos ambos tenedores
-	pthread_mutex_lock(filo->l_fork);
-	pthread_mutex_lock(filo->r_fork);
-	//Indicamos que el filo esta comiendo
-	filo->eating = 1;
-	pthread_mutex_lock(&filo->dta->write_lock);
-	printf("Philosopher %d is eating\n", filo->id);
-	pthread_mutex_unlock(&filo->dta->write_lock);
-	// Comer toma un tiempo determinado por el tto_eat
-	usleep(filo->dta->tto_eat * 1000);
-	//Actualizamos el tiempo de la ultima comida
-	pthread_mutex_lock(&filo->dta->meal_lock);
+	filo->is_eating = true;
 	filo->last_meal = get_time();
-	filo->meals_done += 1;
-	pthread_mutex_unlock(&filo->dta->meal_lock);
-	//Liberamos los tenedores
-	filo->eating = 0;
-	pthread_mutex_unlock(filo->r_fork);
-	pthread_mutex_unlock(filo->l_fork);
+	printf(YEL"Philosopher is eating!\n"RES, filo->id);
+	usleep(filo->dta->tto_eat * 1000);
+	filo->meals_done++;
+	filo->is_eating = false;
 }
 
-void	*filo_routine(void *arg)
+void	sleep(t_filo *filo)
 {
-	t_filo	*filo;
-
-	filo = (t_filo *)arg;
-	while (!filo->dta->dead_flag)
-	{
-		pthread_mutex_lock(&filo->dta->write_lock);
-		printf("Philosopher %d is thinking\n", filo->id);
-		pthread_mutex_unlock(&filo->dta->write_lock);
-		eat(filo);
-		pthread_mutex_lock(&filo->dta->write_lock);
-		printf("Philosopher %d is sleeping\n", filo->id);
-		pthread_mutex_unlock(&filo->dta->write_lock);
-		usleep(filo->dta->tto_sleep * 1000);
-	}
-	return (NULL);
+	printf(MAG"Philosopher is sleeping!\n"RES, filo->id);
+	usleep(filo->dta->tto_sleep * 1000);
 }
+
