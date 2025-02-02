@@ -12,3 +12,4 @@
 
 // Iniciar los mutex de tenedores y la estrucutra de datos.!!!!
 #include "philo.h"
+

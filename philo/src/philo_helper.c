@@ -9,7 +9,7 @@
 /*   Updated: 2025/01/28 17:13:43 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+// hacer freeFunc, para liberar memory de filos
 #include "../includes/philo.h"
 
 long long	get_time(void)
