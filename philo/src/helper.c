@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_manager.c                                    :+:      :+:    :+:   */
+/*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/05 18:41:16 by mmarinov         ###   ########.fr       */
+/*   Created: 2025/02/05 16:05:28 by mmarinov          #+#    #+#             */
+/*   Updated: 2025/02/06 17:56:28 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_exit(const char *error)
+void	free_resources(t_dta *dta)
 {
-	printf(RED"%s\n"RES, error);
-	exit(EXIT_FAILURE);
-}
+	int	i;
 
-void	ft_prints(t_dta *dta, int id, const char *acts)
-{
-	pthread_mutex_lock(&dta->write_lock);
-	if (!dta->death)
-		printf(MAG"%lld %d %s\n"RES, time_now() - dta->start_time, id, acts);
-	pthread_mutex_unlock(&dta->write_lock);
+	i = 0;
+	while (i < dta->n_filos)
+	{
+		pthread_mutex_destroy(&dta->forks[i].mutex);
+		i++;
+	}
+	free(dta->filos);
+	free(dta->forks);
 }

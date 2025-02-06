@@ -1,27 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_manager.c                                    :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/05 18:41:16 by mmarinov         ###   ########.fr       */
+/*   Created: 2025/02/05 16:06:17 by mmarinov          #+#    #+#             */
+/*   Updated: 2025/02/06 17:51:53 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_exit(const char *error)
+long long	time_now(void)
 {
-	printf(RED"%s\n"RES, error);
-	exit(EXIT_FAILURE);
+	struct timeval	now;
+	long long		mlsec;
+
+	gettimeofday(&now, NULL);
+	mlsec = ((now.tv_sec * 1000) + (now.tv_usec / 1000));
+	return (mlsec);
 }
 
-void	ft_prints(t_dta *dta, int id, const char *acts)
+int	ft_usleep(long long time)
 {
-	pthread_mutex_lock(&dta->write_lock);
-	if (!dta->death)
-		printf(MAG"%lld %d %s\n"RES, time_now() - dta->start_time, id, acts);
-	pthread_mutex_unlock(&dta->write_lock);
+	struct timespec	ts;
+	long long		start_time;
+
+	start_time = time_now();
+	ts.tv_sec = time / 1000;
+	ts.tv_nsec = (time % 1000) * 1000000;
+	while ((time_now() - start_time) < time)
+	{
+		nanosleep(&ts, NULL);
+	}
+	return (1);
 }
