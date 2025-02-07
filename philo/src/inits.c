@@ -6,11 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:33:32 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/06 17:55:24 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:51:16 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 int	init_filos(t_dta *dta)
 {
@@ -49,16 +49,16 @@ void	take_forks(t_filo *filo)
 	if (filo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&filo->lf->mutex);
-		ft_prints(filo->dta, filo->id, YEL"has taken a left fork"RES);
+		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
 		pthread_mutex_lock(&filo->rf->mutex);
-		ft_prints(filo->dta, filo->id, "has taken a right fork");
+		ft_prints(filo->dta, filo->id, GR"has taken a right fork"RES);
 	}
 	else
 	{
 		pthread_mutex_lock(&filo->rf->mutex);
-		ft_prints(filo->dta, filo->id, "has taken a right fork");
+		ft_prints(filo->dta, filo->id, GR"has taken a right fork"RES);
 		pthread_mutex_lock(&filo->lf->mutex);
-		ft_prints(filo->dta, filo->id, YEL"has taken a left fork"RES);
+		ft_prints(filo->dta, filo->id, YEL"has taken a  fork"RES);
 	}
 }
 

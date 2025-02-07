@@ -6,11 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/05 18:41:16 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:19:13 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 void	error_exit(const char *error)
 {

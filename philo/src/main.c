@@ -6,11 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:33:46 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/06 19:34:56 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 19:05:27 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 int	check_args(int ac, char **av)
 {
@@ -46,71 +46,47 @@ static void	start(int ac, char **av, t_dta *dta)
 	else
 		dta->n_meals = -1;
 }
-/*
-static void	create_threads(t_dta *dta)
+
+static void	create_threads(t_dta *dta, pthread_t *monitor_thread)
 {
-	int			i;
-	pthread_t	monitor_thread;
+	int	i;
 
 	i = 0;
 	while (i < dta->n_filos)
 	{
-		if (pthread_create(&dta->filos[i].thread, NULL, lifecycle,
-				(void *)&dta->filos[i]) != 0)
-			error_exit("Error creating threads");
+		if (pthread_create(&dta->filos[i].thread, NULL,
+				lifecycle, (void *)&dta->filos[i]) != 0)
+			error_exit("Error creating thread\n");
 		i++;
 	}
-	if (pthread_create(&monitor_thread, NULL, monitor,
-			(void *)&dta->filos[i]) != 0)
-		error_exit("Error creating monitor thread");
-	pthread_join(monitor_thread, NULL);
+	if (pthread_create(monitor_thread, NULL, monitor, (void *)dta) != 0)
+		error_exit("Error creating monitor thread\n");
+}
+
+static void	join_threads(t_dta *dta, pthread_t monitor_thread)
+{
+	int	i;
+
 	i = 0;
 	while (i < dta->n_filos)
 	{
 		pthread_join(dta->filos[i].thread, NULL);
 		i++;
 	}
+	pthread_join(monitor_thread, NULL);
 }
 
 int	main(int ac, char **av)
 {
 	t_dta		dta;
-
-	start(ac, av, &dta);
-	init_dta(&dta);
-	if (init_filos(&dta))
-		return (1);
-	create_threads(&dta);
-	free_resources(&dta);
-	return (0);
-}*/
-
-int	main(int ac, char **av)
-{
-	t_dta		dta;
-	int			i;
 	pthread_t	monitor_thread;
 
 	start(ac, av, &dta);
 	init_dta(&dta);
 	if (init_filos(&dta))
 		return (1);
-	i = 0;
-	while (i < dta.n_filos)
-	{
-		if (pthread_create(&dta.filos[i].thread, NULL, lifecycle, (void *)&dta.filos[i]) != 0)
-			error_exit("Error creating thread\n");
-		i++;
-	}
-	if (pthread_create(&monitor_thread, NULL, monitor, (void *)&dta) != 0)
-		error_exit("Error creating monitor thread\n");
-	i = 0;
-	while (i < dta.n_filos)
-	{
-		pthread_join(dta.filos[i].thread, NULL);
-		i++;
-	}
-	pthread_join(monitor_thread, NULL);
+	create_threads(&dta, &monitor_thread);
+	join_threads(&dta, monitor_thread);
 	free_resources(&dta);
 	return (0);
 }

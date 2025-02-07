@@ -6,11 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:06:17 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/06 17:51:53 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:02:50 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 long long	time_now(void)
 {
@@ -31,8 +31,6 @@ int	ft_usleep(long long time)
 	ts.tv_sec = time / 1000;
 	ts.tv_nsec = (time % 1000) * 1000000;
 	while ((time_now() - start_time) < time)
-	{
 		nanosleep(&ts, NULL);
-	}
 	return (1);
 }

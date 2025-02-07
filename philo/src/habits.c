@@ -6,11 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:40:50 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/06 17:41:30 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:27:01 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 void	eat(t_filo *filo)
 {
@@ -26,7 +26,7 @@ void	eat(t_filo *filo)
 
 void	think(t_filo *filo)
 {
-	ft_prints(filo->dta, filo->id, "is thinking");
+	ft_prints(filo->dta, filo->id, MAG"is thinking"RES);
 }
 
 void	sleep_filo(t_filo *filo)
@@ -40,6 +40,16 @@ void	*lifecycle(void *arg)
 	t_filo	*filo;
 
 	filo = (t_filo *)arg;
+	if (filo->dta->n_filos == 1)
+	{
+		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
+		usleep(filo->dta->tto_die * 1000);
+		printf("filo %d ha muerto\n", filo->id);
+		ft_prints(filo->dta, filo->id, RED"has died"RES);
+		filo->dta->death = true;
+		free_resources(filo->dta);
+		return (NULL);
+	}
 	while (!filo->dta->death)
 	{
 		eat(filo);

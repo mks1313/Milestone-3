@@ -6,11 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:48:18 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/06 19:01:56 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:35:17 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../inc/philo.h"
 
 void	check_death(t_dta *dta, int i)
 {
@@ -22,8 +22,9 @@ void	check_death(t_dta *dta, int i)
 		pthread_mutex_lock(&dta->dead_lock);
 		if (!dta->death)
 		{
-			dta->death = 1;
-			ft_prints(dta, dta->filos[i].id, "has died");
+			dta->death = true;
+			printf(MAG"%lld %d %s\n"RES, time_now() - dta->start_time,
+				dta->filos[i].id, RED"has died"RES);
 		}
 		pthread_mutex_unlock(&dta->dead_lock);
 	}
