@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:48:18 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/07 16:35:17 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:05:44 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,27 @@ void	check_death(t_dta *dta, int i)
 	}
 }
 
+void	check_meals(t_dta *dta)
+{
+	int	i;
+	int	full;
+
+	full = 0;
+	i = 0;
+	while (i < dta->n_filos)
+	{
+		if (dta->filos[i].meals_done >= dta->n_meals)
+			full++;
+		i++;
+	}
+	if (full == dta->n_filos)
+	{
+		pthread_mutex_lock(&dta->dead_lock);
+		dta->death = true;
+		pthread_mutex_unlock(&dta->dead_lock);
+	}
+}
+
 void	*monitor(void *arg)
 {
 	t_dta		*dta;
@@ -46,7 +67,9 @@ void	*monitor(void *arg)
 				return (NULL);
 			i++;
 		}
-		usleep(1000);
+		if (dta->n_meals > 0)
+			check_meals(dta);
+		usleep(200);
 	}
 	return (NULL);
 }

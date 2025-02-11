@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:40:50 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/07 16:27:01 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:14:59 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	*lifecycle(void *arg)
 	{
 		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
 		usleep(filo->dta->tto_die * 1000);
-		printf("filo %d ha muerto\n", filo->id);
 		ft_prints(filo->dta, filo->id, RED"has died"RES);
 		filo->dta->death = true;
 		free_resources(filo->dta);
