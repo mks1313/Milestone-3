@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:33:32 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 14:52:18 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:06:10 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	init_filos(t_dta *dta)
 		dta->filos[i].lf = &dta->forks[i];
 		dta->filos[i].rf = &dta->forks[(i + 1) % dta->n_filos];
 		dta->filos[i].dta = dta;
-		dta->filos[i].eating = false;
-		dta->filos[i].meals_done = 0;
 		dta->filos[i].last_meal = time_now();
+		dta->filos[i].meals_done = 0;
+		dta->filos[i].eating = false;
 		i++;
 	}
 	return (0);
@@ -42,6 +42,7 @@ void	init_dta(t_dta *dta)
 	dta->start_time = time_now();
 	pthread_mutex_init(&dta->write_lock, NULL);
 	pthread_mutex_init(&dta->dead_lock, NULL);
+	pthread_mutex_init(&dta->meal_lock, NULL);
 }
 
 void	take_forks(t_filo *filo)

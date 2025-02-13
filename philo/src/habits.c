@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:40:50 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 15:35:26 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:49:13 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@ void	eat(t_filo *filo)
 	filo->eating = true;
 	filo->last_meal = time_now();
 	ft_prints(filo->dta, filo->id, BL"is eating"RES);
+	pthread_mutex_unlock(&filo->dta->dead_lock);
+	pthread_mutex_lock(&filo->dta->meal_lock);
 	filo->meals_done++;
+	pthread_mutex_unlock(&filo->dta->meal_lock);
+	ft_usleep(filo->dta->tto_eat);
+	pthread_mutex_lock(&filo->dta->dead_lock);
 	filo->eating = false;
 	pthread_mutex_unlock(&filo->dta->dead_lock);
-	ft_usleep(filo->dta->tto_eat);
 	put_forks(filo);
 }
 
@@ -50,18 +54,17 @@ void	*lifecycle(void *arg)
 	{
 		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
 		usleep(filo->dta->tto_die * 1000);
-		ft_prints(filo->dta, filo->id, RED"has died"RES);
+		ft_prints(filo->dta, filo->id, RED"HAS DIED"RES);
 		filo->dta->death = true;
-		free_resources(filo->dta);
 		return (NULL);
 	}
 	while (!filo->dta->death)
 	{
 		eat(filo);
+		if (filo->meals_done == filo->dta->n_meals)
+			break ;
 		sleep_filo(filo);
 		think(filo);
-		//if (filo->meals_done == filo->dta->n_meals)
-		//break ;
 	}
 	return (NULL);
 }

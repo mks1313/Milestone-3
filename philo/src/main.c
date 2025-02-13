@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:33:46 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/11 16:05:54 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:26:25 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,19 @@ static void	join_threads(t_dta *dta, pthread_t monitor_thread)
 
 int	main(int ac, char **av)
 {
-	t_dta		dta;
+	t_dta		*dta;
 	pthread_t	monitor_thread;
 
-	start(ac, av, &dta);
-	init_dta(&dta);
-	if (init_filos(&dta))
+	dta = malloc(sizeof(t_dta));
+	if (!dta)
 		return (1);
-	create_threads(&dta, &monitor_thread);
-	join_threads(&dta, monitor_thread);
-	free_resources(&dta);
+	start(ac, av, dta);
+	init_dta(dta);
+	if (init_filos(dta))
+		return (1);
+	create_threads(dta, &monitor_thread);
+	join_threads(dta, monitor_thread);
+	free_resources(dta);
+	free(dta);
 	return (0);
 }

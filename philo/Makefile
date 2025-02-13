@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2025/01/27 15:54:12 by mmarinov         ###   ########.fr        #
+#    Updated: 2025/02/13 17:37:54 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,22 +19,26 @@ RED     = \033[0;91m
 CYAN    = \033[0;96m
 BLUE    = \033[0;94m
 
-NAME = philo
+# Project settings
 
-SRC_PATH  = src/
-INC_PATH  = includes/
+NAME    = philo
+SRC_PATH = src/
+INC_PATH = inc/
 
+# Source files and object files
 
-SRC       = philo.c philo_helper.c create.c inits.c habits.c
+SRC     = main.c utils.c habits.c inits.c monitor.c parseo.c
+SRCS    = $(addprefix $(SRC_PATH), $(SRC))
+OBJ_DIR = objs
+OBJS    = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
-SRCS      = $(addprefix $(SRC_PATH), $(SRC))
+# Compiler and flags
 
-OBJ_DIR   = objs
-OBJS      = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+CC      = gcc  -lpthread  -fsanitize=thread -g
+CFLAGS  = -Wall -Wextra -Werror -g -I$(INC_PATH)
+RM      = rm -rf
 
-CC        = gcc
-CFLAGS    = -Wall -Wextra -Werror -g -I$(INC_PATH)
-RM        = rm -rf
+# Targets
 
 all: $(NAME)
 
@@ -45,6 +49,7 @@ $(NAME): $(OBJS)
 $(OBJ_DIR)/%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN)Compiled $<$(END)" > /dev/null 2>&1
 
 clean:
 	@$(RM) $(OBJ_DIR)
@@ -52,10 +57,10 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@$(RM) $(OBJ_DIR) >  /dev/null
 	@echo "$(RED)Executable $(NAME) removed!$(END)"
 
 re: fclean all
 	@echo "$(CYAN)Everything clean & recompiled!$(END)"
 
 .PHONY: all clean fclean re
+

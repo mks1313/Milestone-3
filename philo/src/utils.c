@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_manager.c                                    :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 14:16:36 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:45:57 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	free_resources(t_dta *dta)
 	}
 	pthread_mutex_destroy(&dta->write_lock);
 	pthread_mutex_destroy(&dta->dead_lock);
+	pthread_mutex_destroy(&dta->meal_lock);
 	free(dta->filos);
 	free(dta->forks);
 }
