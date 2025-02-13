@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:33:32 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/11 17:06:07 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:52:18 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void	take_forks(t_filo *filo)
 {
 	if (filo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&filo->lf->mutex);
-		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
 		pthread_mutex_lock(&filo->rf->mutex);
-		ft_prints(filo->dta, filo->id, GR"has taken a right fork"RES);
+		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
+		pthread_mutex_lock(&filo->lf->mutex);
+		ft_prints(filo->dta, filo->id, GR"has taken a fork"RES);
 	}
 	else
 	{
-		pthread_mutex_lock(&filo->rf->mutex);
-		ft_prints(filo->dta, filo->id, GR"has taken a right fork"RES);
 		pthread_mutex_lock(&filo->lf->mutex);
-		ft_prints(filo->dta, filo->id, YEL"has taken a  fork"RES);
+		ft_prints(filo->dta, filo->id, GR"has taken a fork"RES);
+		pthread_mutex_lock(&filo->rf->mutex);
+		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
 	}
 }
 
