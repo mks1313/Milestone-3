@@ -6,23 +6,11 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:48:18 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 17:49:28 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 22:09:25 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-
-static int	check_death_status(t_dta *dta)
-{
-	pthread_mutex_lock(&dta->dead_lock);
-	if (dta->death)
-	{
-		pthread_mutex_unlock(&dta->dead_lock);
-		return (1);
-	}
-	pthread_mutex_unlock(&dta->dead_lock);
-	return (0);
-}
 
 void	check_death(t_dta *dta)
 {
@@ -42,6 +30,8 @@ void	check_death(t_dta *dta)
 			dta->death = true;
 		}
 		pthread_mutex_unlock(&dta->dead_lock);
+		if (dta->death)
+			break ;
 		i++;
 	}
 }
@@ -55,13 +45,16 @@ void	check_meals(t_dta *dta)
 	full = 0;
 	while (i < dta->n_filos)
 	{
+		pthread_mutex_lock(&dta->meal_lock);
 		if (dta->filos[i].meals_done >= dta->n_meals)
 			full++;
+		pthread_mutex_unlock(&dta->meal_lock);
 		i++;
 	}
 	if (full == dta->n_filos)
 	{
 		pthread_mutex_lock(&dta->dead_lock);
+		printf(GR"All Philosophers have eaten %d times!\n"RES, dta->n_meals);
 		dta->death = true;
 		pthread_mutex_unlock(&dta->dead_lock);
 	}
@@ -74,14 +67,17 @@ void	*monitor(void *arg)
 	dta = (t_dta *)arg;
 	while (1)
 	{
-		if (check_death_status(dta))
+		pthread_mutex_lock(&dta->dead_lock);
+		if (dta->death)
+		{
+			pthread_mutex_unlock(&dta->dead_lock);
 			return (NULL);
+		}
+		pthread_mutex_unlock(&dta->dead_lock);
 		check_death(dta);
 		if (dta->n_meals > 0)
 			check_meals(dta);
-		if (check_death_status(dta))
-			return (NULL);
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

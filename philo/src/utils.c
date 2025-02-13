@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 17:45:57 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:21:58 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_usleep(long long time)
 		elapsed = time_now() - start_time;
 		if (elapsed >= time)
 			break ;
-		usleep(100);
+		usleep(150);
 	}
 	return (1);
 }

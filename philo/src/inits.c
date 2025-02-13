@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:33:32 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 17:06:10 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/13 22:23:39 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,19 @@ void	take_forks(t_filo *filo)
 {
 	if (filo->id % 2 == 0)
 	{
+		ft_prints(filo->dta, filo->id, "trying take right fork");
 		pthread_mutex_lock(&filo->rf->mutex);
 		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
+		ft_prints(filo->dta, filo->id, "trying take left fork");
 		pthread_mutex_lock(&filo->lf->mutex);
 		ft_prints(filo->dta, filo->id, GR"has taken a fork"RES);
 	}
 	else
 	{
+		ft_prints(filo->dta, filo->id, "trying take left fork");
 		pthread_mutex_lock(&filo->lf->mutex);
 		ft_prints(filo->dta, filo->id, GR"has taken a fork"RES);
+		ft_prints(filo->dta, filo->id, "trying take right fork");
 		pthread_mutex_lock(&filo->rf->mutex);
 		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
 	}
@@ -66,5 +70,7 @@ void	take_forks(t_filo *filo)
 void	put_forks(t_filo *filo)
 {
 	pthread_mutex_unlock(&filo->lf->mutex);
+	printf("Filósofo %d ha soltado el tenedor izquierdo\n", filo->id);
 	pthread_mutex_unlock(&filo->rf->mutex);
+	printf("Filósofo %d ha soltado el tenedor drecho\n", filo->id);
 }
