@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 19:21:58 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:04:32 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,6 @@ void	ft_prints(t_dta *dta, int id, const char *acts)
 	if (!dta->death)
 		printf(MAG "%lld %d %s\n" RES, time_now() - dta->start_time, id, acts);
 	pthread_mutex_unlock(&dta->write_lock);
-}
-
-void	free_resources(t_dta *dta)
-{
-	int	i;
-
-	i = 0;
-	while (i < dta->n_filos)
-	{
-		pthread_mutex_destroy(&dta->forks[i].mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&dta->write_lock);
-	pthread_mutex_destroy(&dta->dead_lock);
-	pthread_mutex_destroy(&dta->meal_lock);
-	free(dta->filos);
-	free(dta->forks);
 }
 
 long long	time_now(void)
@@ -67,4 +50,21 @@ int	ft_usleep(long long time)
 		usleep(150);
 	}
 	return (1);
+}
+
+void	free_resources(t_dta *dta)
+{
+	int	i;
+
+	i = 0;
+	while (i < dta->n_filos)
+	{
+		pthread_mutex_destroy(&dta->forks[i].mutex);
+		i++;
+	}
+	pthread_mutex_destroy(&dta->write_lock);
+	pthread_mutex_destroy(&dta->dead_lock);
+	pthread_mutex_destroy(&dta->meal_lock);
+	free(dta->filos);
+	free(dta->forks);
 }

@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:48:18 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 22:09:25 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:18:38 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	check_death(t_dta *dta)
 		pthread_mutex_lock(&dta->dead_lock);
 		if (t_last_meal > dta->tto_die && !dta->death)
 		{
-			ft_prints(dta, i + 1, RED"HAS DIED"RES);
+			ft_prints(dta, i + 1, RED"🩸🩸🩸 DIED 🩸🩸🩸"RES);
 			dta->death = true;
 		}
 		pthread_mutex_unlock(&dta->dead_lock);

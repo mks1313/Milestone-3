@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:40:50 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 22:34:03 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:21:17 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	eat(t_filo *filo)
 {
 	take_forks(filo);
 	pthread_mutex_lock(&filo->dta->dead_lock);
-	//filo->eating = true;
-	//filo->last_meal = time_now();
 	ft_prints(filo->dta, filo->id, BL"is eating"RES);
 	pthread_mutex_unlock(&filo->dta->dead_lock);
 	pthread_mutex_lock(&filo->dta->meal_lock);
@@ -63,7 +61,6 @@ void	*lifecycle(void *arg)
 		if (filo->dta->death)
 		{
 			pthread_mutex_unlock(&filo->dta->dead_lock);
-			//ft_prints(filo->dta, filo->id, RED"HAS DIED"RES);
 			break ;
 		}
 		pthread_mutex_unlock(&filo->dta->dead_lock);

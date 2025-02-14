@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2025/02/13 17:37:54 by mmarinov         ###   ########.fr        #
+#    Updated: 2025/02/14 12:56:17 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,9 @@ OBJS    = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 # Compiler and flags
 
-CC      = gcc  -lpthread  -fsanitize=thread -g
+CC      = gcc  -lpthread
 CFLAGS  = -Wall -Wextra -Werror -g -I$(INC_PATH)
+CFLAGS += -g -O1 -fsanitize=thread
 RM      = rm -rf
 
 # Targets
