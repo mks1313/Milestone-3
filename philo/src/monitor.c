@@ -17,6 +17,12 @@ void	check_death(t_dta *dta)
 	int			i;
 	long long	t_last_meal;
 
+	if (dta->n_filos == 1)
+    {
+        ft_prints(dta, 1, RED"🩸🩸🩸 DIED 🩸🩸🩸"RES);
+        dta->death = true;
+        return;
+    }
 	i = 0;
 	while (i < dta->n_filos)
 	{
@@ -67,13 +73,13 @@ void	*monitor(void *arg)
 	dta = (t_dta *)arg;
 	while (1)
 	{
-		pthread_mutex_lock(&dta->dead_lock);
+		//pthread_mutex_lock(&dta->dead_lock);
 		if (dta->death)
 		{
-			pthread_mutex_unlock(&dta->dead_lock);
+			//pthread_mutex_unlock(&dta->dead_lock);
 			return (NULL);
 		}
-		pthread_mutex_unlock(&dta->dead_lock);
+		//pthread_mutex_unlock(&dta->dead_lock);
 		check_death(dta);
 		if (dta->n_meals > 0)
 			check_meals(dta);

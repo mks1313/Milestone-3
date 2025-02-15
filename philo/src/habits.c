@@ -52,11 +52,15 @@ void	*lifecycle(void *arg)
 	filo = (t_filo *)arg;
 	if (filo->dta->n_filos == 1)
 	{
+		pthread_mutex_lock(&filo->dta->dead_lock);
 		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
 		ft_usleep(filo->dta->tto_die);
-		ft_prints(filo->dta, filo->id, RED"has died"RES);
-		filo->dta->death = true;
+		//ft_prints(filo->dta, filo->id, RED"has died"RES);
+		//filo->dta->death = true;
 		//free_resources(filo->dta);
+		free_resources(filo->dta);
+		pthread_mutex_unlock(&filo->dta->dead_lock);
+		free_resources(filo->dta);
 		return (NULL);
 	}
 	while (1)

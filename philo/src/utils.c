@@ -21,8 +21,10 @@ void	error_exit(const char *error)
 void	ft_prints(t_dta *dta, int id, const char *acts)
 {
 	pthread_mutex_lock(&dta->write_lock);
+	//pthread_mutex_lock(&dta->dead_lock);
 	if (!dta->death)
 		printf(MAG "%lld %d %s\n" RES, time_now() - dta->start_time, id, acts);
+	//pthread_mutex_unlock(&dta->dead_lock);
 	pthread_mutex_unlock(&dta->write_lock);
 }
 

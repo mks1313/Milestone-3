@@ -27,14 +27,17 @@ INC_PATH = inc/
 
 # Source files and object files
 
-SRC       = main.c helper.c inits.c habits.c error_manager.c parseo.c \
-			time.c monitor.c
+SRC     = main.c utils.c habits.c inits.c monitor.c parseo.c
+SRCS    = $(addprefix $(SRC_PATH), $(SRC))
+OBJ_DIR = objs
+OBJS    = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 # Compiler and flags
 
-CC      = gcc  -lpthread
+CC      = gcc
 CFLAGS  = -Wall -Wextra -Werror -g -I$(INC_PATH)
 CFLAGS += -g -O1 -fsanitize=thread
+LDFLAGS = -lpthread
 RM      = rm -rf
 
 # Targets
@@ -42,7 +45,7 @@ RM      = rm -rf
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	@echo "$(YELLOW)Executable $(NAME) created successfully!$(END)"
 
 $(OBJ_DIR)/%.o: $(SRC_PATH)%.c
@@ -62,4 +65,3 @@ re: fclean all
 	@echo "$(CYAN)Everything clean & recompiled!$(END)"
 
 .PHONY: all clean fclean re
-
