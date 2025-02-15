@@ -53,7 +53,15 @@ void	*lifecycle(void *arg)
 	if (filo->dta->n_filos == 1)
 	{
 		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
+<<<<<<< HEAD
 		usleep(filo->dta->tto_die * 1000);
+=======
+		ft_usleep(filo->dta->tto_die);
+		ft_prints(filo->dta, filo->id, RED"has died"RES);
+		filo->dta->death = true;
+		//free_resources(filo->dta);
+		return (NULL);
+>>>>>>> 6aec572 (something)
 	}
 	while (1)
 	{

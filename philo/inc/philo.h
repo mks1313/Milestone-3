@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 12:57:20 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/14 15:50:35 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:01:50 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <stdbool.h>
-# include <stdarg.h>
 
 # ifndef COLOR_H
 #  define COLOR_H
@@ -41,30 +40,30 @@ typedef struct s_fork
 
 typedef struct s_filo
 {
-	int				id;
-	pthread_t		thread;
-	bool			eating;
-	long long		last_meal;
-	t_fork			*rf;
-	t_fork			*lf;
-	int				meals_done;
-	struct s_dta	*dta;
+	int				id;// Identificador del filósofo
+	pthread_t		thread;// Hilo del filósofo
+	bool			eating;// Indicador de si está comiendo
+	long long		last_meal;// Tiempo de la última comida
+	t_fork			*rf;// Puntero al tenedor a la derecha
+	t_fork			*lf;// Puntero al tenedor a la izquierda
+	int				meals_done;// Número de comidas realizadas
+	struct s_dta	*dta; //Puntero a la estructura de datos
 }					t_filo;
 
 typedef struct s_dta
 {
-	pthread_mutex_t	dead_lock;
-	pthread_mutex_t	write_lock;
+	pthread_mutex_t	dead_lock; // Mutex para proteger dead_flag
+	pthread_mutex_t	write_lock;// Mutex para controlar la salida de datos
 	pthread_mutex_t	meal_lock;
-	t_filo			*filos;
-	t_fork			*forks;
-	bool			death;
-	long long		tto_die;
-	long long		tto_eat;
-	long long		tto_sleep;
-	long long		start_time;
-	int				n_filos;
-	int				n_meals;
+	t_filo			*filos; // Array de filósofos
+	t_fork			*forks; //Array de tenedorres
+	int				death; // Indicador de si algún filósofo ha muerto
+	long long		tto_die;// Tiempo máximo sin comer antes de morir
+	long long		tto_eat;// Tiempo que toma comer
+	long long		tto_sleep;// Tiempo que toma dormir
+	long long		start_time;// Tiempo de inicio de la simulacion
+	int				n_filos;// Número total de filósofos
+	int				n_meals;// Núm de veces que cada filósofo debe comer
 }					t_dta;
 
 int			ft_atoi(const char *s);
@@ -79,7 +78,6 @@ void		think(t_filo *filo);
 void		sleep_filo(t_filo *filo);
 void		*lifecycle(void *arg);
 void		check_death(t_dta *dta);
-void		check_meals(t_dta *dta);
 void		*monitor(void *arg);
 void		init_dta(t_dta *dta);
 int			init_filos(t_dta *dta);
