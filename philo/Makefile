@@ -27,15 +27,8 @@ INC_PATH = inc/
 
 # Source files and object files
 
-<<<<<<< HEAD
-SRC     = main.c utils.c habits.c inits.c monitor.c parseo.c
-SRCS    = $(addprefix $(SRC_PATH), $(SRC))
-OBJ_DIR = objs
-OBJS    = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
-=======
 SRC       = main.c helper.c inits.c habits.c error_manager.c parseo.c \
 			time.c monitor.c
->>>>>>> 6aec572 (something)
 
 # Compiler and flags
 
