@@ -49,7 +49,7 @@ int	ft_usleep(long long time)
 		elapsed = time_now() - start_time;
 		if (elapsed >= time)
 			break ;
-		usleep(150);
+		usleep(10);
 	}
 	return (1);
 }

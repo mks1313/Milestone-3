@@ -49,7 +49,7 @@ void	take_forks(t_filo *filo)
 {
 	if (filo->id % 2 == 0)
 	{
-		//ft_usleep(150);
+		ft_usleep(10);
 		pthread_mutex_lock(&filo->rf->mutex);
 		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
 		pthread_mutex_lock(&filo->lf->mutex);
@@ -63,16 +63,16 @@ void	take_forks(t_filo *filo)
 		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
 	}
 }
-/*
+
 void	put_forks(t_filo *filo)
 {
-	//pthread_mutex_unlock(&filo->lf->mutex);
-	//pthread_mutex_unlock(&filo->rf->mutex);
-	pthread_mutex_unlock(&filo->rf->mutex);
 	pthread_mutex_unlock(&filo->lf->mutex);
-}*/
+	pthread_mutex_unlock(&filo->rf->mutex);
+	//pthread_mutex_unlock(&filo->rf->mutex);
+	//pthread_mutex_unlock(&filo->lf->mutex);
+}
 
-void put_forks(t_filo *filo)
+/*void put_forks(t_filo *filo)
 {
     if (filo->id % 2 == 0)
     {
@@ -85,3 +85,4 @@ void put_forks(t_filo *filo)
         pthread_mutex_unlock(&filo->lf->mutex);  // Luego libera el tenedor izquierdo
     }
 }
+*/
