@@ -57,7 +57,8 @@ typedef struct s_dta
 	pthread_mutex_t	meal_lock;
 	t_filo			*filos; // Array de filósofos
 	t_fork			*forks; //Array de tenedorres
-	int				death; // Indicador de si algún filósofo ha muerto
+	bool			death; // Indicador de si algún filósofo ha muerto
+	bool			full;
 	long long		tto_die;// Tiempo máximo sin comer antes de morir
 	long long		tto_eat;// Tiempo que toma comer
 	long long		tto_sleep;// Tiempo que toma dormir

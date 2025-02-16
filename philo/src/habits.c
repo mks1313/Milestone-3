@@ -18,11 +18,13 @@ void	eat(t_filo *filo)
 	pthread_mutex_lock(&filo->dta->dead_lock);
 	ft_prints(filo->dta, filo->id, BL"is eating"RES);
 	pthread_mutex_unlock(&filo->dta->dead_lock);
+
 	pthread_mutex_lock(&filo->dta->meal_lock);
 	filo->last_meal = time_now();
 	filo->eating = true;
 	filo->meals_done++;
 	pthread_mutex_unlock(&filo->dta->meal_lock);
+
 	ft_usleep(filo->dta->tto_eat);
 	pthread_mutex_lock(&filo->dta->dead_lock);
 	filo->eating = false;
@@ -32,15 +34,23 @@ void	eat(t_filo *filo)
 
 void	think(t_filo *filo)
 {
-	if (!filo->eating)
+	pthread_mutex_lock(&filo->dta->dead_lock);
+	pthread_mutex_lock(&filo->dta->meal_lock);
+	if (!filo->eating && !filo->dta->death)
 		ft_prints(filo->dta, filo->id, MAG"is thinking"RES);
+		pthread_mutex_unlock(&filo->dta->meal_lock);
+		pthread_mutex_unlock(&filo->dta->dead_lock);
 }
 
 void	sleep_filo(t_filo *filo)
 {
-	if (!filo->eating)
+	if (!filo->eating && !filo->dta->death)
 	{
+		pthread_mutex_lock(&filo->dta->dead_lock);
+		pthread_mutex_lock(&filo->dta->meal_lock);
 		ft_prints(filo->dta, filo->id, CYAN"is sleeping"RES);
+		pthread_mutex_unlock(&filo->dta->meal_lock);
+		pthread_mutex_unlock(&filo->dta->dead_lock);
 		ft_usleep(filo->dta->tto_sleep);
 	}
 }
@@ -55,12 +65,8 @@ void	*lifecycle(void *arg)
 		pthread_mutex_lock(&filo->dta->dead_lock);
 		ft_prints(filo->dta, filo->id, YEL"has taken a fork"RES);
 		ft_usleep(filo->dta->tto_die);
-		//ft_prints(filo->dta, filo->id, RED"has died"RES);
-		//filo->dta->death = true;
-		//free_resources(filo->dta);
 		free_resources(filo->dta);
 		pthread_mutex_unlock(&filo->dta->dead_lock);
-		free_resources(filo->dta);
 		return (NULL);
 	}
 	while (1)
