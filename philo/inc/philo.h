@@ -42,7 +42,7 @@ typedef struct s_filo
 {
 	int				id;// Identificador del filósofo
 	pthread_t		thread;// Hilo del filósofo
-	bool			eating;// Indicador de si está comiendo
+	//bool			eating;// Indicador de si está comiendo
 	long long		last_meal;// Tiempo de la última comida
 	t_fork			*rf;// Puntero al tenedor a la derecha
 	t_fork			*lf;// Puntero al tenedor a la izquierda

@@ -30,7 +30,7 @@ int	init_filos(t_dta *dta)
 		dta->filos[i].dta = dta;
 		dta->filos[i].last_meal = time_now();
 		dta->filos[i].meals_done = 0;
-		dta->filos[i].eating = false;
+		//dta->filos[i].eating = false;
 		i++;
 	}
 	return (0);

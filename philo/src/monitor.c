@@ -22,14 +22,18 @@ void	check_death(t_dta *dta)
 	{
 		pthread_mutex_lock(&dta->meal_lock);
 		t_last_meal = time_now() - dta->filos[i].last_meal;
-		pthread_mutex_unlock(&dta->meal_lock);
-		pthread_mutex_lock(&dta->dead_lock);
+		//pthread_mutex_unlock(&dta->meal_lock);
+
+		//pthread_mutex_lock(&dta->meal_lock);
 		if (t_last_meal > dta->tto_die && !dta->death)
 		{
 			ft_prints(dta, i + 1, RED"🩸🩸🩸 DIED 🩸🩸🩸"RES);
+			pthread_mutex_unlock(&dta->dead_lock);
 			dta->death = true;
+			pthread_mutex_unlock(&dta->dead_lock);
 		}
-		pthread_mutex_unlock(&dta->dead_lock);
+		pthread_mutex_unlock(&dta->meal_lock);
+
 		if (dta->death)
 			break ;
 		i++;
@@ -77,7 +81,7 @@ void	*monitor(void *arg)
 		check_death(dta);
 		if (dta->n_meals > 0)
 			check_meals(dta);
-		usleep(100);
+		usleep(1);
 	}
 	return (NULL);
 }
