@@ -40,31 +40,31 @@ typedef struct s_fork
 
 typedef struct s_filo
 {
-	int				id;// Identificador del filósofo
-	pthread_t		thread;// Hilo del filósofo
-	//bool			eating;// Indicador de si está comiendo
-	long long		last_meal;// Tiempo de la última comida
-	t_fork			*rf;// Puntero al tenedor a la derecha
-	t_fork			*lf;// Puntero al tenedor a la izquierda
-	int				meals_done;// Número de comidas realizadas
-	struct s_dta	*dta; //Puntero a la estructura de datos
+	int				id;
+	pthread_t		thread;
+	//bool			eating;
+	long long		last_meal;
+	t_fork			*rf;
+	t_fork			*lf;
+	int				meals_done;
+	struct s_dta	*dta;
 }					t_filo;
 
 typedef struct s_dta
 {
-	pthread_mutex_t	dead_lock; // Mutex para proteger dead_flag
-	pthread_mutex_t	write_lock;// Mutex para controlar la salida de datos
+	pthread_mutex_t	dead_lock; 
+	pthread_mutex_t	write_lock;
 	pthread_mutex_t	meal_lock;
-	t_filo			*filos; // Array de filósofos
-	t_fork			*forks; //Array de tenedorres
-	bool			death; // Indicador de si algún filósofo ha muerto
+	t_filo			*filos; 
+	t_fork			*forks; 
+	bool			death; 
 	bool			full;
-	long long		tto_die;// Tiempo máximo sin comer antes de morir
-	long long		tto_eat;// Tiempo que toma comer
-	long long		tto_sleep;// Tiempo que toma dormir
-	long long		start_time;// Tiempo de inicio de la simulacion
-	int				n_filos;// Número total de filósofos
-	int				n_meals;// Núm de veces que cada filósofo debe comer
+	long long		tto_die;
+	long long		tto_eat;
+	long long		tto_sleep;
+	long long		start_time;
+	int				n_filos;
+	int				n_meals;
 }					t_dta;
 
 int			ft_atoi(const char *s);

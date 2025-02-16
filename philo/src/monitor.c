@@ -12,32 +12,28 @@
 
 #include "../inc/philo.h"
 
-void	check_death(t_dta *dta)
+void check_death(t_dta *dta)
 {
-	int			i;
-	long long	t_last_meal;
+    int i;
+    long long t_last_meal;
 
-	i = 0;
-	while (i < dta->n_filos)
-	{
-		pthread_mutex_lock(&dta->meal_lock);
-		t_last_meal = time_now() - dta->filos[i].last_meal;
-		//pthread_mutex_unlock(&dta->meal_lock);
-
-		//pthread_mutex_lock(&dta->meal_lock);
-		if (t_last_meal > dta->tto_die && !dta->death)
-		{
-			ft_prints(dta, i + 1, RED"🩸🩸🩸 DIED 🩸🩸🩸"RES);
-			pthread_mutex_unlock(&dta->dead_lock);
-			dta->death = true;
-			pthread_mutex_unlock(&dta->dead_lock);
-		}
-		pthread_mutex_unlock(&dta->meal_lock);
-
-		if (dta->death)
-			break ;
-		i++;
-	}
+    i = 0;
+    while (i < dta->n_filos)
+    {
+        pthread_mutex_lock(&dta->meal_lock); 
+        t_last_meal = time_now() - dta->filos[i].last_meal;
+        pthread_mutex_unlock(&dta->meal_lock); 
+        pthread_mutex_lock(&dta->dead_lock); 
+        if (t_last_meal > dta->tto_die && !dta->death)
+        {
+            ft_prints(dta, i + 1, RED"🩸🩸🩸 DIED 🩸🩸🩸"RES);
+            dta->death = true;
+        }
+        pthread_mutex_unlock(&dta->dead_lock);
+        if (dta->death)
+            break;
+        i++;
+    }
 }
 
 void	check_meals(t_dta *dta)

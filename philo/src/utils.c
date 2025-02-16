@@ -18,23 +18,15 @@ void	error_exit(const char *error)
 	exit(EXIT_FAILURE);
 }
 
-void ft_prints(t_dta *dta, int id, const char *acts)
+void	ft_prints(t_dta *dta, int id, const char *acts)
 {
-    pthread_mutex_lock(&dta->write_lock);
-    
-    // Bloqueamos el mutex para death
-    pthread_mutex_lock(&dta->dead_lock);
-    bool death = dta->death;  // Leemos la variable death
-    pthread_mutex_unlock(&dta->dead_lock);
-
-    // Si no hay muerte, imprimimos el mensaje
-    if (!death) {
-        printf(MAG "%lld %d %s\n" RES, time_now() - dta->start_time, id, acts);
-    }
-
-    pthread_mutex_unlock(&dta->write_lock);
+	pthread_mutex_lock(&dta->write_lock);
+	//pthread_mutex_lock(&dta->dead_lock);
+	if (!dta->death)
+		printf(MAG "%lld %d %s\n" RES, time_now() - dta->start_time, id, acts);
+	//pthread_mutex_unlock(&dta->dead_lock);
+	pthread_mutex_unlock(&dta->write_lock);
 }
-
 
 long long	time_now(void)
 {
