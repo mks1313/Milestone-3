@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/14 16:04:32 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:53:46 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	error_exit(const char *error)
 void	ft_prints(t_dta *dta, int id, const char *acts)
 {
 	pthread_mutex_lock(&dta->write_lock);
-	//pthread_mutex_lock(&dta->dead_lock);
+	pthread_mutex_lock(&dta->dead_lock);
 	if (!dta->death)
 		printf(MAG "%lld %d %s\n" RES, time_now() - dta->start_time, id, acts);
-	//pthread_mutex_unlock(&dta->dead_lock);
+	pthread_mutex_unlock(&dta->dead_lock);
 	pthread_mutex_unlock(&dta->write_lock);
 }
 
@@ -49,7 +49,7 @@ int	ft_usleep(long long time)
 		elapsed = time_now() - start_time;
 		if (elapsed >= time)
 			break ;
-		usleep(10);
+		usleep(500);
 	}
 	return (1);
 }

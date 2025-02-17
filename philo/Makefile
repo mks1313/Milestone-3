@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2025/02/14 12:56:17 by mmarinov         ###   ########.fr        #
+#    Updated: 2025/02/17 15:15:28 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ OBJS    = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 CC      = gcc
 CFLAGS  = -Wall -Wextra -Werror -g -I$(INC_PATH)
-CFLAGS += -g -O1 -fsanitize=thread
+CFLAGS += -g -O1 #-fsanitize=thread
 LDFLAGS = -lpthread
 RM      = rm -rf
 

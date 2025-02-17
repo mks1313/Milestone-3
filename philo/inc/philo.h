@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 12:57:20 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/07 15:01:50 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:11:52 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@
 
 #  define RED   "\033[1;31m"
 #  define GR    "\033[1;32m"
+#  define LGR   "\033[1;92m"
+#  define LGREY "\033[38;5;250m"
+#  define GREY  "\033[1;90m"
 #  define YEL   "\033[1;33m"
+#  define OR    "\033[38;5;214m"
 #  define BL    "\033[1;34m"
 #  define MAG   "\033[1;35m"
 #  define CYAN  "\033[1;36m"
@@ -42,7 +46,6 @@ typedef struct s_filo
 {
 	int				id;
 	pthread_t		thread;
-	//bool			eating;
 	long long		last_meal;
 	t_fork			*rf;
 	t_fork			*lf;
@@ -52,12 +55,12 @@ typedef struct s_filo
 
 typedef struct s_dta
 {
-	pthread_mutex_t	dead_lock; 
+	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	meal_lock;
-	t_filo			*filos; 
-	t_fork			*forks; 
-	bool			death; 
+	t_filo			*filos;
+	t_fork			*forks;
+	bool			death;
 	bool			full;
 	long long		tto_die;
 	long long		tto_eat;

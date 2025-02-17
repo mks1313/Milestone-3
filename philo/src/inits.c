@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:33:32 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/14 16:11:06 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/17 16:03:32 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	init_filos(t_dta *dta)
 		dta->filos[i].dta = dta;
 		dta->filos[i].last_meal = time_now();
 		dta->filos[i].meals_done = 0;
-		//dta->filos[i].eating = false;
 		i++;
 	}
 	return (0);
@@ -49,7 +48,6 @@ void	take_forks(t_filo *filo)
 {
 	if (filo->id % 2 == 0)
 	{
-		ft_usleep(10);
 		pthread_mutex_lock(&filo->rf->mutex);
 		ft_prints(filo->dta, filo->id, YEL"has taken a right fork"RES);
 		pthread_mutex_lock(&filo->lf->mutex);
@@ -68,21 +66,4 @@ void	put_forks(t_filo *filo)
 {
 	pthread_mutex_unlock(&filo->lf->mutex);
 	pthread_mutex_unlock(&filo->rf->mutex);
-	//pthread_mutex_unlock(&filo->rf->mutex);
-	//pthread_mutex_unlock(&filo->lf->mutex);
 }
-
-/*void put_forks(t_filo *filo)
-{
-    if (filo->id % 2 == 0)
-    {
-        pthread_mutex_unlock(&filo->lf->mutex);  // Primero libera el tenedor izquierdo
-        pthread_mutex_unlock(&filo->rf->mutex);  // Luego libera el tenedor derecho
-    }
-    else
-    {
-        pthread_mutex_unlock(&filo->rf->mutex);  // Primero libera el tenedor derecho
-        pthread_mutex_unlock(&filo->lf->mutex);  // Luego libera el tenedor izquierdo
-    }
-}
-*/
