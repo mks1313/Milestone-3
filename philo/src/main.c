@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:33:46 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/18 12:16:21 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:58:34 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	start(int ac, char **av, t_dta *dta)
 			return (0);
 	}
 	else
-		dta->n_meals = -1;
+		dta->n_meals = 0;
 	return (1);
 }
 

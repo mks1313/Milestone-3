@@ -6,7 +6,7 @@
 #    By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/27 13:09:50 by mmarinov          #+#    #+#              #
-#    Updated: 2025/02/18 13:18:34 by mmarinov         ###   ########.fr        #
+#    Updated: 2025/02/18 20:33:59 by mmarinov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 	@echo "$(YELLOW)Executable $(NAME) created successfully!$(END)"
 
-$(OBJ_DIR)/%.o: $(SRC_PATH)%.c Makefile
+$(OBJ_DIR)/%.o: $(SRC_PATH)%.c $(INC_PATH)/philo.h Makefile
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(GREEN)Compiled $<$(END)" > /dev/null 2>&1
