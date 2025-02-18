@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:33:32 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/17 16:03:32 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:41:14 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	init_filos(t_dta *dta)
 	dta->forks = malloc(sizeof(t_fork) * dta->n_filos);
 	dta->filos = malloc(sizeof(t_filo) * dta->n_filos);
 	if (!dta->forks || !dta->filos)
-		return (error_exit("Memory allocation failed"), 1);
+	{
+		error_exit("Memory allocation failed");
+		return (1);
+	}
 	i = 0;
 	while (i < dta->n_filos)
 	{

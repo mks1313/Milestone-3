@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:11:14 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/17 15:53:46 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:40:02 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	error_exit(const char *error)
 {
 	printf(RED"%s\n"RES, error);
-	exit(EXIT_FAILURE);
 }
 
 void	ft_prints(t_dta *dta, int id, const char *acts)

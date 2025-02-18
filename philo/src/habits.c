@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:40:50 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/17 15:56:13 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:15:01 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	eat(t_filo *filo)
 	filo->meals_done++;
 	pthread_mutex_unlock(&filo->dta->meal_lock);
 	ft_usleep(filo->dta->tto_eat);
-	pthread_mutex_lock(&filo->dta->dead_lock);
-	pthread_mutex_unlock(&filo->dta->dead_lock);
 	put_forks(filo);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 14:33:46 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/13 19:08:44 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:16:21 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,48 @@ int	check_args(int ac, char **av)
 {
 	int	i;
 
+	if (!check_int_count(ac))
+		return (0);
+	if (!check_num_filo(av[1]))
+		return (0);
 	i = 1;
-	if (ac != 5 && ac != 6)
-	{
-		error_exit("Wrong input!\n"
-			GR"Correct is (example) : ./philo 3 500 200 200 [4]\n"RES);
-	}
-	if (ft_atoi(av[1]) > 200)
-		error_exit("Error: Number of the Philos is too big!(max = 200)");
 	while (i < ac)
 	{
-		if (ft_atoi(av[i]) == 0)
-			error_exit("Error: Params shoud be a zero number!");
+		if (!check_params(av[i]))
+			return (0);
 		i++;
 	}
 	return (1);
 }
 
-static void	start(int ac, char **av, t_dta *dta)
+static int	start(int ac, char **av, t_dta *dta)
 {
 	if (!check_args(ac, av))
-		error_exit("Error: Something goes wrong my friend :(!");
+		return (0);
 	dta->n_filos = ft_atoi(av[1]);
+	if (dta->n_filos == -1)
+		return (0);
 	dta->tto_die = ft_atoi(av[2]);
+	if (dta->tto_die == -1)
+		return (0);
 	dta->tto_eat = ft_atoi(av[3]);
+	if (dta->tto_eat == -1)
+		return (0);
 	dta->tto_sleep = ft_atoi(av[4]);
+	if (dta->tto_sleep == -1)
+		return (0);
 	if (ac == 6)
+	{
 		dta->n_meals = ft_atoi(av[5]);
+		if (dta->n_meals == -1)
+			return (0);
+	}
 	else
 		dta->n_meals = -1;
+	return (1);
 }
 
-static void	create_threads(t_dta *dta, pthread_t *monitor_thread)
+static int	create_threads(t_dta *dta, pthread_t *monitor_thread)
 {
 	int	i;
 
@@ -56,11 +66,18 @@ static void	create_threads(t_dta *dta, pthread_t *monitor_thread)
 	{
 		if (pthread_create(&dta->filos[i].thread, NULL,
 				lifecycle, (void *)&dta->filos[i]) != 0)
+		{
 			error_exit("Error creating thread\n");
+			return (1);
+		}
 		i++;
 	}
 	if (pthread_create(monitor_thread, NULL, monitor, (void *)dta) != 0)
+	{
 		error_exit("Error creating monitor thread\n");
+		return (1);
+	}
+	return (0);
 }
 
 static void	join_threads(t_dta *dta, pthread_t monitor_thread)
@@ -84,7 +101,11 @@ int	main(int ac, char **av)
 	dta = malloc(sizeof(t_dta));
 	if (!dta)
 		return (1);
-	start(ac, av, dta);
+	if (!start(ac, av, dta))
+	{
+		free(dta);
+		return (1);
+	}
 	init_dta(dta);
 	if (init_filos(dta))
 		return (1);

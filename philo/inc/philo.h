@@ -6,7 +6,7 @@
 /*   By: mmarinov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 12:57:20 by mmarinov          #+#    #+#             */
-/*   Updated: 2025/02/17 15:11:52 by mmarinov         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:59:25 by mmarinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,8 @@ void		init_dta(t_dta *dta);
 int			init_filos(t_dta *dta);
 void		free_resources(t_dta *dta);
 int			check_args(int ac, char **av);
+int			check_int_count(int ac);
+int			check_num_filo(char *arg);
+int			check_params(char *arg);
 
 #endif
